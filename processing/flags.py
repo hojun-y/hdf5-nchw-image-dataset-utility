@@ -1,0 +1,9 @@
+DATASET_DATA_FLAG = 'data'
+DATASET_LABEL_FLAG = 'label'
+DATASET_INFO_FLAG = 'info'
+
+INFO_RESOLUTION = 'info/res'
+INFO_MAX_INDEX = 'info/nidx'
+INFO_LABELLING = 'info/label'
+INFO_VERSION = 'info/ver'
+DATASET_VERSION = '1.1'
