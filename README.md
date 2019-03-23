@@ -30,12 +30,13 @@ $ python build_dataset.py [output_path] [images_path] [resolution]
 
 **IMPORTANT:**
 The structure of the folder **must be** set as follows:
-If `--unsupervised` is not set(defaults):
 
-- The label of images is the name of first subfolder.
-- The label name must be `int` like `1/path/to/image.jpg`
+- If `--unsupervised` is not set(defaults):
 
-example of folders structure:
+  - The label of images is the name of first subfolder.
+  - The label name must be `int` like `1/path/to/image.jpg`
+
+  - example of folders structure:
 ```
 # images_path is main_folder/
 main folder/
@@ -48,9 +49,9 @@ main folder/
 |   +-- image.jpg
 ...
 ```
-
-If `--unsupervised` is set:
-- The structure of image folders is **not** restricted.
+<br>
+- If `--unsupervised` is set:
+  - The structure of image folders is **not** restricted.
 
 #### 2. Options
 | Option           | Description                                                  | Usage                                                       |
@@ -87,8 +88,10 @@ Done! You can use `get_batch` function when you need a batch data.
 batch_feeder.get_batch(batch_size, label=True)
 ```
 
-The return of this function is tuple: `(image_batch_data, label_data)`<br>If `label=False` or the dataset is created in unsupervised mode, `label_data` will be `None`.
-The shape of `image_batch_data` is `[batch_size, 3, resolution, resolution]`.<br>The shape of `label` is `[batch_size, 1]` or `None`.
+The return of this function is tuple: `(image_batch_data, label_data)`<br>
+If `label=False` or the dataset is created in unsupervised mode, `label_data` will be `None`.<br>
+The shape of `image_batch_data` is `[batch_size, 3, resolution, resolution]`.<br>
+The shape of `label` is `[batch_size, 1]` or `None`.
 
 This is the simple example of using `get_batch` function:
 ```python
