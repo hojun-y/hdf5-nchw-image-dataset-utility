@@ -6,4 +6,5 @@ INFO_RESOLUTION = 'info/res'
 INFO_MAX_INDEX = 'info/nidx'
 INFO_LABELLING = 'info/label'
 INFO_VERSION = 'info/ver'
-DATASET_VERSION = '1.1'
+INFO_CHANNEL = 'info/ch'
+DATASET_VERSION = 1

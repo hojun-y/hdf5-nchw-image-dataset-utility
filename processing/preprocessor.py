@@ -7,8 +7,8 @@ crop_resizemethod = {'bilinear': tf.image.ResizeMethod.BILINEAR,
 
 
 class Preprocessor:
-    def __init__(self, resolution, resize_method, crop_method):
-        self.img = tf.placeholder(tf.float32, [None, None, 3])
+    def __init__(self, resolution, resize_method, crop_method, channels):
+        self.img = tf.placeholder(tf.float32, [None, None, channels])
         self.min_size = tf.placeholder(tf.int32, None)
 
         self.source = tf.divide(self.img, 255)

@@ -24,6 +24,7 @@ parser.add_argument('--resize', type=str, default='bilinear',
 parser.add_argument('--comp_level', type=int, default=4, help='Image compression level 0-9.')
 parser.add_argument('--iter', type=int, default=1, help='Processing iteration for random cropping method')
 parser.add_argument('--unsupervised', action='store_true', default=False)
+parser.add_argument('--grayscale', action='store_true', default=False)
 args = parser.parse_args()
 
 if os.path.exists(args.output_path):
@@ -39,18 +40,20 @@ if os.path.exists(args.output_path):
         else:
             pass
 
+channels = 3 if not args.grayscale else 1
+
 
 # Path searching generator
 def _search_files_generator():
     path = args.images_path
     for folder_path, _, files in os.walk(path):
         for file in files:
-            str_label = folder_path[len(path):].split(os.sep)[0] if not args.unsupervised else None
+            str_label = folder_path[len(path):].split(os.sep)[-1] if not args.unsupervised else None
             yield [os.path.join(folder_path, file), str_label]
 
 
 # Initialize compressor and preprocessor
-preprocess = preprocessor.Preprocessor(args.resolution, args.resize, args.crop)
+preprocess = preprocessor.Preprocessor(args.resolution, args.resize, args.crop, channels)
 compress = compressor.Compressor(args.compress, np.clip(args.comp_level, 0, 9))
 print('TF session and compressor initialized.')
 
@@ -63,7 +66,16 @@ with h5py.File(args.output_path, 'w') as f:
 
     image_generator = _search_files_generator()
     for image, label in image_generator:
-        img = np.array(Image.open(image))
+        img = Image.open(image)
+
+        if channels == 1:
+            img = img.convert('L')
+            img = np.array(img)
+            img = np.reshape(img, [img.shape[0], img.shape[1], 1])
+
+        else:
+            img = np.array(img)
+
         for i in range(args.iter):
             img_processed = preprocess.process_image(img)
             img_compressed = compress.compress_bytes(img_processed.tostring())
@@ -80,5 +92,6 @@ with h5py.File(args.output_path, 'w') as f:
     f.create_dataset(strs.INFO_LABELLING, data=not args.unsupervised)
     f.create_dataset(strs.INFO_MAX_INDEX, data=(idx-1))
     f.create_dataset(strs.INFO_RESOLUTION, data=args.resolution)
+    f.create_dataset(strs.INFO_CHANNEL, data=channels)
     f.create_dataset(strs.INFO_VERSION, data=strs.DATASET_VERSION)
 print('Dataset created. Total images: ' + str(idx))
