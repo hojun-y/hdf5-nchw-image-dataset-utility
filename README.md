@@ -76,6 +76,7 @@ So, the cropping method determines how to crop(or pad) source image into square.
 | `resize_only` | The images will not be cropped.<br>So, the final images will be squeezed into square. | ![resize_only](./output_img/resize_only.png)                 |
 | `pad_resize`  | The images will be center padded into square.                       | ![pad_resize](./output_img/pad_resize.png)                   |
 | `random_crop` | The images will be cropped into square randomly. | ![resize_only](./output_img/random_crop2.png)<br>![resize_only](./output_img/random_crop.png) |
+
 Source image: Photo by Julian Rotert on Unsplash
 
 ### 2. Using Dataset
